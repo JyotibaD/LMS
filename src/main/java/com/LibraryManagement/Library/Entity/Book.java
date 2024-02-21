@@ -13,6 +13,8 @@ public class Book {
     private int coppies;
     private String bookAuthor;
 
+    private boolean available;
+
     public Book() {
 
     }
@@ -54,5 +56,13 @@ public class Book {
 
     public void setBookAuthor(String bookAuthor) {
         this.bookAuthor = bookAuthor;
+    }
+
+    public void setAvailable(boolean b) {
+        available=b;
+    }
+
+    public boolean isAvailable() {
+        return available;
     }
 }
