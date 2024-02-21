@@ -1,7 +1,9 @@
 package com.LibraryManagement.Library.Service;
 
+import com.LibraryManagement.Library.Entity.Admin;
 import com.LibraryManagement.Library.Entity.Book;
 import com.LibraryManagement.Library.Entity.Transaction;
+import com.LibraryManagement.Library.Repository.AdminRepository;
 import com.LibraryManagement.Library.Repository.BookRepository;
 import com.LibraryManagement.Library.Repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +17,25 @@ public class TransactionServiceImpl implements TransactionService{
     private final BookRepository bookRepository;
     private final TransactionRepository transactionRepository;
 
+    private final AdminRepository adminRepository ;
+
     @Autowired
-    public TransactionServiceImpl(BookRepository bookRepository, TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(BookRepository bookRepository, TransactionRepository transactionRepository,AdminRepository adminRepository) {
         this.bookRepository = bookRepository;
         this.transactionRepository = transactionRepository;
+        this.adminRepository =adminRepository;
     }
 
     @Transactional
     public void borrowBook(Transaction transaction) {
+
+
         // Retrieve the book from the database
         Book book = bookRepository.findById(transaction.getBook().getBookId())
                 .orElseThrow(() -> new IllegalArgumentException("Book not found with ID: " + transaction.getBook().getBookId()));
+
+       Admin user = adminRepository.findById(transaction.getUser().getUserId())
+               .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + transaction.getUser().getUserId()));
 
         // Check if the book is available for borrowing
 //        if (!book.isAvailable()) {
@@ -35,12 +45,14 @@ public class TransactionServiceImpl implements TransactionService{
         // Update book status to indicate it's no longer available
         book.setAvailable(false);
         bookRepository.save(book);
+        adminRepository.save(transaction.getUser());
 
         // Create a transaction record for the borrowing activity
         Transaction transactionTemp = new Transaction();
-        transaction.setBook(book);
-        transaction.setId(transaction.getBook().getBookId());
-        transaction.setBorrowedDate(LocalDate.now());
+        transactionTemp.setBook(book);
+        transactionTemp.setUser(user);
+        transactionTemp.setId(transaction.getBook().getBookId());
+        transactionTemp.setBorrowedDate(LocalDate.now());
         transactionRepository.save(transactionTemp);
     }
 
