@@ -1,12 +1,11 @@
 package com.LibraryManagement.Library.Service;
 
+import com.LibraryManagement.Library.Entity.Admin;
 import com.LibraryManagement.Library.Entity.Book;
 import com.LibraryManagement.Library.Entity.Purchased;
-import com.LibraryManagement.Library.Entity.User;
 import com.LibraryManagement.Library.Repository.BookRepository;
 import com.LibraryManagement.Library.Repository.PurchasedRepository;
-import com.LibraryManagement.Library.Repository.UserRepository;
-import com.LibraryManagement.Library.Service.PurchasedService;
+import com.LibraryManagement.Library.Repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class PurchasedServiceImpl implements PurchasedService {
     @Autowired
     BookRepository bookRepository;
     @Autowired
-    UserRepository userRepository;
+    AdminRepository adminRepository;
 
 //    public PurchasedServiceImpl(BookRepository bookRepository) {
 //        this.bookRepository = bookRepository;
@@ -32,13 +31,13 @@ public class PurchasedServiceImpl implements PurchasedService {
     public String purchaseBookById(int bookId,String userName,int coppies) {
         boolean b=bookRepository.existsById(bookId);
         Book book=bookRepository.findById(bookId).get();
-        User user=new User();
-        boolean b1=userRepository.existsById(user.getUserId());
+        Admin admin =new Admin();
+        boolean b1= adminRepository.existsById(admin.getUserId());
         int c=book.getCoppies();
         if(coppies<=2 && c>1 ){
             if (b){
                 if(b1){
-                    purchasedRepository.save(new Purchased(bookId,book.getBookName(),c,user.getUserName(),user.getPhoneNumber()));
+                    purchasedRepository.save(new Purchased(bookId,book.getBookName(),c, admin.getUserName(), admin.getPhoneNumber()));
                     return "Happy reading...";
 
                 }

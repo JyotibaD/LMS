@@ -1,26 +1,25 @@
 package com.LibraryManagement.Library.Controller;
 
-import com.LibraryManagement.Library.Entity.Book;
-import com.LibraryManagement.Library.Entity.User;
-import com.LibraryManagement.Library.Service.UserService;
+import com.LibraryManagement.Library.Entity.Admin;
+import com.LibraryManagement.Library.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/admin/user")
+public class AdminController {
     @Autowired
-    UserService userService;
+    AdminService adminService;
 
 //    public  UserController(UserService userService){
 //        this.userService=userService;
 //    }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable("userId") int userId){
-        return userService.getUserByID(userId);
+    public Admin getUserById(@PathVariable("userId") int userId){
+        return adminService.getUserByID(userId);
     }
 
 //    @GetMapping("/userName")
@@ -29,25 +28,25 @@ public class UserController {
 //    }
 
     @GetMapping("/getAll")
-    public List<User> getAllUser(){
-        return userService.getAllUsers();
+    public List<Admin> getAllUser(){
+        return adminService.getAllUsers();
     }
 
     @PostMapping
-    public String addUser(@RequestBody User user){
-        String msg=userService.addUser(user);
+    public String addUser(@RequestBody Admin admin){
+        String msg= adminService.addUser(admin);
         return msg;
     }
 
     @PutMapping
-    public String updateUser(@RequestBody User user){
-        String msg=userService.updateUser(user);
+    public String updateUser(@RequestBody Admin admin){
+        String msg= adminService.updateUser(admin);
         return msg;
     }
 
     @DeleteMapping("/{userId}")
     public String deleteUser(@PathVariable("userId") int userId){
-        String msg=userService.deleteUser(userId);
+        String msg= adminService.deleteUser(userId);
         return msg;
     }
 

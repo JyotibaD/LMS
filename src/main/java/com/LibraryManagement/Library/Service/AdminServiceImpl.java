@@ -1,25 +1,24 @@
 package com.LibraryManagement.Library.Service;
 
-import com.LibraryManagement.Library.Entity.User;
-import com.LibraryManagement.Library.Repository.UserRepository;
-import com.LibraryManagement.Library.Service.UserService;
+import com.LibraryManagement.Library.Entity.Admin;
+import com.LibraryManagement.Library.Repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class AdminServiceImpl implements AdminService {
     @Autowired
-    UserRepository userRepository;
+    AdminRepository adminRepository;
 
 //    public UserServiceImpl(UserRepository userRepository){
 //        this.userRepository=userRepository;
 //    }
 
     @Override
-    public User getUserByID(int userId) {
-        return userRepository.findById(userId).get();
+    public Admin getUserByID(int userId) {
+        return adminRepository.findById(userId).get();
     }
 
 //    @Override
@@ -28,25 +27,25 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<Admin> getAllUsers() {
+        return adminRepository.findAll();
     }
 
     @Override
-    public String addUser(User user) {
-        userRepository.save(user);
+    public String addUser(Admin admin) {
+        adminRepository.save(admin);
         return "User added";
     }
 
     @Override
-    public String updateUser(User user) {
-        userRepository.save(user);
+    public String updateUser(Admin admin) {
+        adminRepository.save(admin);
         return "User details updated";
     }
 
     @Override
     public String deleteUser(int userId) {
-        userRepository.deleteById(userId);
+        adminRepository.deleteById(userId);
         return "User deleted";
     }
 }
